@@ -1,6 +1,7 @@
 const express = require('express');
 const { ExpressPeerServer } = require('peer');
 const cors = require('cors');
+const http = require('http');
 
 const app = express();
 const PORT = process.env.PORT || 8080;
@@ -21,10 +22,8 @@ app.get('/', (req, res) => {
   });
 });
 
-// Create HTTP server
-const server = app.listen(PORT, () => {
-  console.log(`✅ PeerJS server running on port ${PORT}`);
-});
+// Create HTTP server explicitly for WebSocket handling
+const server = http.createServer(app);
 
 // Create PeerJS server with Render.com optimized configuration
 const peerServer = ExpressPeerServer(server, {
@@ -60,6 +59,10 @@ peerServer.on('error', (error) => {
   console.error('❌ PeerJS server error:', error);
 });
 
-console.log('🎯 PeerJS server mounted at /peerjs');
-console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
-console.log(`🚀 Server URL: https://peerjs-server-render.onrender.com/peerjs`);
+// Start server
+server.listen(PORT, () => {
+  console.log(`✅ PeerJS server running on port ${PORT}`);
+  console.log('🎯 PeerJS server mounted at /peerjs');
+  console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
+  console.log(`🚀 Server URL: https://peerjs-server-render.onrender.com/peerjs`);
+});
