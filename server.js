@@ -26,13 +26,15 @@ const server = app.listen(PORT, () => {
   console.log(`✅ PeerJS server running on port ${PORT}`);
 });
 
-// Create PeerJS server with minimal configuration
+// Create PeerJS server with Render.com optimized configuration
 const peerServer = ExpressPeerServer(server, {
   debug: true,
   allow_discovery: true,
   path: '/peerjs',
   concurrent_limit: 1000,
   proxied: true,
+  // Render.com specific settings
+  ssl: false, // Let Render.com handle SSL
   config: {
     iceServers: [
       { urls: 'stun:stun.l.google.com:19302' },
@@ -60,4 +62,4 @@ peerServer.on('error', (error) => {
 
 console.log('🎯 PeerJS server mounted at /peerjs');
 console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
-console.log(`🚀 Server URL: https://peerjs-server-production-c81a.up.railway.app/peerjs`);
+console.log(`🚀 Server URL: https://peerjs-server-render.onrender.com/peerjs`);
